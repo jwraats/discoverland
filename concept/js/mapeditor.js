@@ -3,6 +3,12 @@ Mapeditor.tileset = {};
 Mapeditor.tileset.src = "";
 Mapeditor.tileset.tileSize = 32;
 Mapeditor.mapSetup = {};
+Mapeditor.mapSetup.layers = [];
+
+//Toolbar
+Mapeditor.tools = {};
+Mapeditor.tools.activeLayer = 0;
+Mapeditor.tools.activeTile = 79;
 
 
 Mapeditor.init = function(){
@@ -20,12 +26,15 @@ Mapeditor.drawMap = function(){
 	Mapeditor.tileset.numTiles = Mapeditor.tileset.Image.width / Mapeditor.tileset.tileSize;
 	Mapeditor.canvas.lineWidth = 1
 	Mapeditor.canvas.strokeStyle = '#e2e2e2';
+	Mapeditor.canvas.clearRect ( 0 , 0 , $element.innerWidth(), $element.innerHeight());
 	for(var x = 0; x < ($element.innerWidth() / Mapeditor.tileset.tileSize); x++){
 		for(var y = 0; y < ($element.innerHeight() / Mapeditor.tileset.tileSize); y++){
 			//Draw  all layers
 			$.each(Mapeditor.mapSetup.layers, function(l, layer ){
-				if(layer[y] !== undefined && layer[y][x] !== undefined){
-					Mapeditor.drawImage(layer[y][x], x, y);
+				if(l <= Mapeditor.tools.activeLayer){	//Only go to active layers so don't see upper layers then!
+					if(layer[y] !== undefined && layer[y][x] !== undefined){
+						Mapeditor.drawImage(layer[y][x], x, y);
+					}
 				}
 			});
 			//Create grid (horizontal)
@@ -40,14 +49,22 @@ Mapeditor.drawMap = function(){
 	}
 };
 
+Mapeditor.changeActiveLayer = function(layer){
+	if(layer <= Mapeditor.mapSetup.layers.length){
+		Mapeditor.tools.activeLayer = layer;
+		//Redraw map
+		Mapeditor.drawMap();
+	}
+};
+
 Mapeditor.bindClick = function(){
 	var $canvas = $('#main');
 	$canvas.on('click', function(event){
 		var x = Math.floor((event.clientX - $canvas.offset().left) / Mapeditor.tileset.tileSize);
 		var y = Math.floor((event.clientY - $canvas.offset().top) / Mapeditor.tileset.tileSize);
-		console.log(event);
-		console.log('x:'+x+' y:'+y);
-		Mapeditor.drawImage(79, x, y);
+
+		Mapeditor.mapSetup.layers[Mapeditor.tools.activeLayer][y][x] = Mapeditor.tools.activeTile;
+		Mapeditor.drawImage(Mapeditor.tools.activeTile, x, y);
 	});
 };
 
