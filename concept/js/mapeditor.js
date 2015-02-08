@@ -4,6 +4,7 @@ Mapeditor.tileset.src = "";
 Mapeditor.tileset.tileSize = 32;
 Mapeditor.mapSetup = {};
 
+
 Mapeditor.init = function(){
 	Mapeditor.tileset.Image = new Image();
 	Mapeditor.tileset.Image.src = './img/tileset.png';
@@ -11,37 +12,63 @@ Mapeditor.init = function(){
 	var canvas = document.getElementById('main');
 	Mapeditor.canvas = canvas.getContext('2d');
 	Mapeditor.createRandomGround();
+	Mapeditor.bindClick();
 };
 
 Mapeditor.drawMap = function(){
+	var $element = $('#main');
 	Mapeditor.tileset.numTiles = Mapeditor.tileset.Image.width / Mapeditor.tileset.tileSize;
-	$.each(Mapeditor.mapSetup.ground, function( x, groundY ) {
-		$.each(groundY, function( y, value ) {
-			//Draw ground //canvas.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
-			Mapeditor.drawImage(value, x, y);
-			$.each(Mapeditor.mapSetup.layers, function(l, layer ) {
-				Mapeditor.drawImage(layer[x][y], x, y);
+	Mapeditor.canvas.lineWidth = 1
+	Mapeditor.canvas.strokeStyle = '#e2e2e2';
+	for(var x = 0; x < ($element.innerWidth() / Mapeditor.tileset.tileSize); x++){
+		for(var y = 0; y < ($element.innerHeight() / Mapeditor.tileset.tileSize); y++){
+			//Draw  all layers
+			$.each(Mapeditor.mapSetup.layers, function(l, layer ){
+				if(layer[y] !== undefined && layer[y][x] !== undefined){
+					Mapeditor.drawImage(layer[y][x], x, y);
+				}
 			});
-		});
+			//Create grid (horizontal)
+			Mapeditor.canvas.moveTo(0, y * Mapeditor.tileset.tileSize);
+			Mapeditor.canvas.lineTo($element.innerWidth(), y* Mapeditor.tileset.tileSize);
+			Mapeditor.canvas.stroke();
+		}
+		//Create grid (vertical)
+		Mapeditor.canvas.moveTo(x * Mapeditor.tileset.tileSize, 0);
+		Mapeditor.canvas.lineTo(x * Mapeditor.tileset.tileSize, $element.innerHeight());
+		Mapeditor.canvas.stroke();
+	}
+};
+
+Mapeditor.bindClick = function(){
+	var $canvas = $('#main');
+	$canvas.on('click', function(event){
+		var x = Math.floor((event.clientX - $canvas.offset().left) / Mapeditor.tileset.tileSize);
+		var y = Math.floor((event.clientY - $canvas.offset().top) / Mapeditor.tileset.tileSize);
+		console.log(event);
+		console.log('x:'+x+' y:'+y);
+		Mapeditor.drawImage(79, x, y);
 	});
 };
 
 Mapeditor.drawImage = function(value, x, y){
+	//canvas.drawImage(img, sx, sy, swidth, sheight, x, y, width, height)
 	Mapeditor.canvas.drawImage(
 		Mapeditor.tileset.Image,
 		(((value % Mapeditor.tileset.numTiles) | 0) * Mapeditor.tileset.tileSize),
 		(((value / Mapeditor.tileset.numTiles) | 0) * Mapeditor.tileset.tileSize),
 		Mapeditor.tileset.tileSize,
 		Mapeditor.tileset.tileSize,
-		(y * Mapeditor.tileset.tileSize),
 		(x * Mapeditor.tileset.tileSize),
+		(y * Mapeditor.tileset.tileSize),
 		Mapeditor.tileset.tileSize,
 		Mapeditor.tileset.tileSize
 	);
 };
 
 Mapeditor.createRandomGround = function(){
-	Mapeditor.mapSetup.ground = [
+	Mapeditor.mapSetup.layers = [
+	[
 		[172, 172, 172, 79, 34, 34, 34, 34, 34, 34, 34, 34, 56, 57, 54, 55, 56, 147, 67, 67, 68, 79, 79, 171, 172, 172, 173, 79, 79, 55, 55, 55],
 		[172, 172, 172, 79, 34, 34, 34, 34, 34, 34, 146, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 155, 142, 172, 159, 189, 79, 79, 55, 55, 55],
 		[172, 172, 172, 79, 79, 34, 34, 34, 34, 34, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 171, 172, 159, 189, 79, 79, 79, 55, 55, 55],
@@ -62,9 +89,7 @@ Mapeditor.createRandomGround = function(){
 		[34, 34, 34, 79, 79, 79, 79, 79, 79, 79, 79, 171, 172, 172, 173, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 171, 172, 172],
 		[34, 34, 34, 34, 79, 79, 79, 79, 79, 79, 155, 172, 172, 159, 189, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 171, 172, 172],
 		[34, 34, 34, 34, 34, 34, 79, 79, 79, 79, 171, 172, 172, 173, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 79, 155, 142, 172, 172]
-	];
-
-	Mapeditor.mapSetup.layers = [
+	],
 	[
 		[0, 0, 32, 33, 0, 236, 0, 0, 236, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 69, 0, 0, 0, 0, 0, 32, 33],
 		[0, 0, 48, 49, 0, 236, 220, 220, 236, 0, 0, 147, 72, 73, 70, 71, 72, 73, 83, 83, 84, 85, 0, 0, 0, 0, 0, 48, 49],
