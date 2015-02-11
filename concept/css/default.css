@@ -52,24 +52,33 @@ nav#links li:hover {
 	background: #502020;
 }
 
+div#container {
+	background: #E7E7E7;
+	border-radius: 5px;
+	min-width: 100%;
+	min-height: 100%;
+}
+
+.clear {
+	clear: both;
+}
+
 /*Toolbar*/
 section#toolbar {
 	width: 250px;
-	background: #E7E7E7;
-	border-radius: 5px;
 	float: left;
 	height: 100%;
-	padding: 10px;
-	margin-right: 5px;
-	margin-left: 5px;
+	padding: 5px;
+	border-right: 2px solid #FFFFFF;
+	border-radius: 5px;
 }
 
 /*Canvas*/
 section#map {
 	background: #E7E7E7;
-	border-radius: 5px;
 	height: 100%;
-	padding-right: 5px;
 	float: left;
 	padding: 5px;
+	border-left: 2px solid #FFFFFF;
+	border-radius: 5px;
 }

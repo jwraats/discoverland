@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<title>HTML5 Concept</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
 		<link rel="stylesheet" type="text/css" href="./css/default.css">
 		<script src="./js/plugins/jquery-1.11.2.min.js" type="text/javascript"></script>
 		<script src="./js/default.js" type="text/javascript"></script>
@@ -18,13 +19,16 @@
 				</ul>
 			</nav>
 		</header>
-		<section id="toolbar">
-			<h1>Toolbar</h1>
-			<canvas id="canvasToolbar" width="250" height="640" />
-		</section>
-		<section id="map">
-			<h1>Map</h1>
-			<canvas id="main" width="1024" height="640" />
-		</section>
+		<div id="container">
+			<section id="toolbar">
+				<h1>Toolbar</h1>
+				<canvas id="canvasToolbar" width="250" height="640"></canvas>
+			</section>
+			<section id="map">
+				<h1>Map</h1>
+				<canvas id="main" width="1024" height="640"></canvas>
+			</section>
+			<div class="clear"></div>
+		</div>
 	</body>
 </html>
