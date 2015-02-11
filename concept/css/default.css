@@ -5,6 +5,11 @@ html,body {
 	padding: 0px;
 }
 
+h1 {
+	font-size: 24px;
+	margin: 2px;
+}
+
 /*Navbar link*/
 nav#links {
 	width: 100%;
@@ -48,7 +53,7 @@ nav#links li:hover {
 }
 
 /*Toolbar*/
-div#toolbar {
+section#toolbar {
 	width: 250px;
 	background: #E7E7E7;
 	border-radius: 5px;
