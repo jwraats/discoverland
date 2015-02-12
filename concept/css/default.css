@@ -3,9 +3,14 @@
  **************************************************/
 html,body {
 	width: 100%;
-	height: 100%;
+	min-height: 100%;
 	margin: 0px;
 	padding: 0px;
+	
+  background: -webkit-linear-gradient(#D0D0D0, #FFFFFF, #D0D0D0); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(#D0D0D0, #FFFFFF, #D0D0D0); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(#D0D0D0, #FFFFFF, #D0D0D0); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(#D0D0D0, #FFFFFF, #D0D0D0); /* Standard syntax */
 }
 
 h1 {
@@ -24,6 +29,8 @@ nav {
 	margin-bottom: 5px;
 	margin-left: 0px;
 	margin: 0 5px 5px 5px;
+	border: 1px solid #000000;
+	box-sizing: border-box;
 }
 
 nav ul {
@@ -69,6 +76,7 @@ section, aside {
 div#container {
 	display: flex;
 	flex-flow: row;
+	clear: both;
 }
 
 /**************************************************
@@ -79,11 +87,12 @@ div#toolbar {
 	order: 1;
 	display:flex;
 	margin-left: 5px;
-	/*width: 260px;*/
 	
 	background: #E7E7E7;
 	border-radius: 10px;
 	padding: 5px;
+	border: 1px solid #000000;
+	box-sizing: border-box;
 }
 
 div#toolbar section, div#toolbar aside {
@@ -102,6 +111,8 @@ div#map {
 	background: #E7E7E7;
 	border-radius: 10px;
 	padding: 5px;
+	border: 1px solid #000000;
+	box-sizing: border-box;
 }
 
 div#map section, div#map aside {
@@ -144,5 +155,6 @@ footer {
 	margin: 5px 5px 0 5px;
 	background: #E7E7E7;
 	border-radius: 10px;
+	border: 1px solid #000000;
 	padding: 5px;
 }
