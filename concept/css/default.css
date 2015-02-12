@@ -64,9 +64,6 @@ nav li:hover {
 	GLOBAL CONTENT
  **************************************************/
 section, aside {
-	background: #E7E7E7;
-	border-radius: 10px;
-	padding: 5px;
 }
 
 div#container {
@@ -78,30 +75,38 @@ div#container {
 	TOOLBAR (LEFT)
  **************************************************/
 div#toolbar {
-	/*flex: 1 1 250px;*/
+	flex: 0 0 260px;
 	order: 1;
 	display:flex;
 	margin-left: 5px;
-	width: 250px;
+	/*width: 260px;*/
+	
+	background: #E7E7E7;
+	border-radius: 10px;
+	padding: 5px;
 }
 
 div#toolbar section, div#toolbar aside {
-	width: 250px;
+	/*width: 260px;*/
 }
 
 /**************************************************
 	CANVAS (RIGHT)
  **************************************************/
 div#map {
-	margin: 0 5px;
+	margin: 0 5px 0 5px;
 	flex: 1 1 auto;
 	order: 2;
 	display:flex;
+	
+	background: #E7E7E7;
+	border-radius: 10px;
+	padding: 5px;
 }
 
 div#map section, div#map aside {
 	/*min-width: 100%;*/
-	width: 100%; 
+	/*width: 100%; */
 }
 
 /**************************************************
@@ -115,14 +120,18 @@ div#map section, div#map aside {
 	
 	div#toolbar, div#map {
 		order: 0;
+		margin: 0 5px;
+	}
+	
+	div#toolbar, div#map {
+		/*min-width: 100%;*/
 	}
 	
 	div#toolbar section, div#toolbar aside , div#map section, div#map aside {
-		min-width: 100%;
+		/*width: 100%;*/
 	}
 	
 	div#toolbar {
-		margin-left: 0px;
 		margin-top: 5px;
 	}
 	
