@@ -1,0 +1,20 @@
+
+{
+  "name": "Discoverland",
+  "version": "0.0.1",
+  "description": "Map editor tool",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jan Willem & Joost Raats",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.8.3",
+    "express": "^4.9.4",
+    "jwt-simple": "^0.2.0",
+    "moment": "^2.8.3",
+    "morgan": "^1.5.0",
+    "mysql": "~2.5.4"
+  }
+}
