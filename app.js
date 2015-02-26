@@ -7,8 +7,8 @@
 var express    	= require('express');        // call express
 var app        	= express();                 // define our app using express
 var bodyParser 	= require('body-parser');
-/*var mysql		= require('mysql');
-var path		= require('path');*/
+var mysql		= require('mysql');
+var path		= require('path');
 
 
 /*var connection = mysql.createConnection(
@@ -26,7 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 
-var port = process.env.PORT || 8082;        // set our port
+var port = process.env.PORT || 8088;        // set our port
 
 // ROUTES FOR OUR API
 // =============================================================================
@@ -34,7 +34,7 @@ var port = process.env.PORT || 8082;        // set our port
 
 // REGISTER OUR ROUTES -------------------------------
 // all of our routes will be prefixed with /api
-app.use('/api', require('./routes/index.js'));
+app.use('/api', require('./controllers/index.js'));
 
 // Static files
 app.use(express.static(__dirname + '/public'));
