@@ -17,10 +17,17 @@ http.createServer(function (req, res) {
                  req.connection.remoteAddress +
                 ' for href: ' + url.parse(req.url).href
     );
-
-
-  //dispatch our request
-  dispatcher.dispatch(req, res);
+	
+	var body = "";
+	req.on('data', function (chunk) {
+		body += chunk;
+	});
+	req.on('end', function () {
+		console.log('POSTed: ' + body);
+		//dispatch our request
+		req.post = body;
+		dispatcher.dispatch(req, res);
+  });
 
   } catch (err) {
       //handle errors gracefully

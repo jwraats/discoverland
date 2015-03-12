@@ -1,28 +1,27 @@
 /*
- * /app/controller/deleteUser.js
+ * /app/controller/createUser.js
  */
  var view = require('../../../lib/view');
-var deleteUser = function() {};
+var createUser = function() {};
 
-deleteUser.prototype = {
+createUser.prototype = {
 	resolve : function(parts) {
 		if(parts.length >= 4) {
-			if(parts[1] == 'api' && parts[2] == 'user' && parts[3] == 'delete') {
+			if(parts[1] == 'api') {
 				return true;
 			}
 		}
 		return false;
 	},
 	render : function(parts, responseHandler) {
+	
+	responseHandler.post('a');
+	
 		var data = {
-			'users' : {
-				'name'    : 'James',
-				'viewLink': '/view/james/'
-			}
 		};
 		
 		var options = {
-			name : 'userDelete',
+			name : 'userCreate',
 			format : 'json',
 			layout : {
 				name : 'default',
@@ -32,10 +31,9 @@ deleteUser.prototype = {
 
 		view.renderView(options, data, function(data) {
 			responseHandler.setJson();
-			console.log(data);
 			responseHandler.render(data);
 		});
 	}
 };
 
-module.exports = new deleteUser();
+module.exports = new createUser();
