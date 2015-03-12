@@ -1,0 +1,13 @@
+/**************************************************
+	GLOBAL SETTINGS
+ **************************************************/
+body {
+	width: 100%;
+	min-height: 100%;
+	margin: 0px;
+	padding-top: 53px;
+}
+
+canvas#main{
+	border:1px solid #000000;
+}
