@@ -11,7 +11,7 @@ index.prototype = {
 		}
 		return false;
 	},
-	render : function(parts, responseHandler) {
+	render : function(parts, req, responseHandler) {
 		var data = {
 			'users' : {
 				'name'    : 'James',
