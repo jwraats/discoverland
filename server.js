@@ -23,9 +23,18 @@ http.createServer(function (req, res) {
 		body += chunk;
 	});
 	req.on('end', function () {
-		console.log('POSTed: ' + body);
 		//dispatch our request
-		req.post = body;
+		var postData = body.split('&');
+		req.postData = new Array();
+		
+		for(var i = 0; i < postData.length; i++) {
+			var postDataElm = postData[i].split('=');
+			
+			if(postDataElm.length >= 2)
+				req.postData[postDataElm[0]] = postDataElm[1];
+			else
+				req.postData[postDataElm[0]] = 1;
+		}
 		dispatcher.dispatch(req, res);
   });
 

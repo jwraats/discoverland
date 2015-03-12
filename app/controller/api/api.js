@@ -13,9 +13,23 @@ createUser.prototype = {
 		}
 		return false;
 	},
-	render : function(parts, responseHandler) {
+	render : function(parts, req, responseHandler) {
 	
-	responseHandler.post('a');
+		switch(parts[2]) {
+			case 'map':
+				this.map(parts, req, responseHandler);
+				break;
+			default:
+				responseHandler.pageNotFound();
+				break;
+		}
+	},
+	map : function(parts, req, responseHandler) {
+		
+	console.log('PO: ' + req.post('po'));
+			console.log('TEST: ' + req.post('test'));
+			
+			
 	
 		var data = {
 		};
