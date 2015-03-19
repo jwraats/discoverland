@@ -1,47 +1,47 @@
-//include our modules
-var sys   = require('sys');
-var http  = require('http');
-var url   = require('url');
+// server.js
 
-//require custom dispatcher
-var dispatcher = require('./lib/dispatcher.js');
+// BASE SETUP
+// =============================================================================
 
-console.log('Starting server @ http://127.0.0.1:8088/');
+// call the packages we need
+var express    	= require('express');        // call express
+var app        	= express();                 // define our app using express
+var bodyParser 	= require('body-parser');
+var mysql		= require('mysql');
+var path		= require('path');
 
-http.createServer(function (req, res) {
-  //wrap calls in a try catch
-  //or the node js server will crash upon any code errors
-  try {
-    //pipe some details to the node console
-    console.log('Incoming Request from: ' +
-                 req.connection.remoteAddress +
-                ' for href: ' + url.parse(req.url).href
-    );
-	
-	var body = "";
-	req.on('data', function (chunk) {
-		body += chunk;
-	});
-	req.on('end', function () {
-		//dispatch our request
-		var postData = body.split('&');
-		req.postData = new Array();
-		
-		for(var i = 0; i < postData.length; i++) {
-			var postDataElm = postData[i].split('=');
-			
-			if(postDataElm.length >= 2)
-				req.postData[postDataElm[0]] = postDataElm[1];
-			else
-				req.postData[postDataElm[0]] = 1;
-		}
-		dispatcher.dispatch(req, res);
-  });
 
-  } catch (err) {
-      //handle errors gracefully
-      sys.puts(err);
-      res.writeHead(500);
-      res.end('Internal Server Error');
-    }
-  }).listen(8088);
+var connection = mysql.createConnection(
+{
+	host : 'localhost',
+	user : 'discoverland',
+	password : 'd1sc0v3rl4nd',
+	database : 'discoverland'
+});
+app.set('dbConnection', connection);
+
+// configure app to use bodyParser()
+// this will let us get the data from a POST
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+
+var port = process.env.PORT || 8088;        // set our port
+
+// ROUTES FOR OUR API
+// =============================================================================
+//var router = express.Router();              // get an instance of the express Router
+
+// REGISTER OUR ROUTES -------------------------------
+// all of our routes will be prefixed with /api
+app.use('/api', require('./routes/index.js'));
+
+// Static files
+app.use(express.static(__dirname + '/www'));
+
+
+// START THE SERVER
+// =============================================================================
+app.listen(port);
+console.log('Magic happens on port ' + port);
+

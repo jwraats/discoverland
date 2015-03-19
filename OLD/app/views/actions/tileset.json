@@ -1,0 +1,12 @@
+{create:{{ success }}
+{{#success}}
+, single:{{ single}},
+data:{{#single}}[{{/single}}
+{{#data}}{{#single}}{{{/single}}
+id:{{id}},
+name:{{name}},
+path:{{path}},
+tileSize:{{tileSize}}{{#single}}},{{/single}}
+{{/data}}
+
+{{/success}} }
