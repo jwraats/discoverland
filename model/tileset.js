@@ -52,13 +52,10 @@ tileset.prototype = {
 	loadAll : function(connection, callback) {
 		console.log('Load all');
 		connection.query("SELECT * FROM tileset",[], function(err, rows){
-			if(err == null || rows == undefined) {
+			if(err != null || rows == undefined) {
 				callback(false, null);
-				console.log('Error: ' + err);
-				console.log('rows: ' + rows);
 				return;
 			}
-			console.log('yee');
 			
 			var results = new Array();
 			
@@ -74,12 +71,10 @@ tileset.prototype = {
 	load:function(connection, id, callback) {
 	console.log('model load');
 		connection.query("SELECT * FROM tileset WHERE id = ?",[id], function(err, rows){
-		console.log('after query');
-			if(err == null || rows == undefined || rows.length != 1) {
-			console.log(err);
-				callback(false);
-				return false;
-			}
+			//if(err != null || rows == undefined || rows.length != 1) {
+			//	callback(false);
+			//	return false;
+			//}
 			
 			this.loadData(rows[0]);
 			callback(true);
@@ -91,12 +86,7 @@ tileset.prototype = {
 		this.tileSize = data.tileSize;
 	},
 	json:function() {
-		var data = new Array();
-		data['id'] = this.id;
-		data['name'] = this.name;
-		data['path'] = this.getPath();
-		data['tileSize'] = this.tileSize;
-		return JSON.stringify(data);
+		return { 'id': this.id, 'name': this.name, 'path': this.getPath(), 'tileSet': this.tileSet};
 	}
 	
 };
