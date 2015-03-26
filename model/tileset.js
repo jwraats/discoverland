@@ -27,7 +27,7 @@ tileset.prototype = {
 	setTileSize : function(size) {
 		this.tileSize = size;
 	},
-	delete : function(callback) {
+	delete : function(connection, callback) {
 		if(this.id == 0) {
 			callback(false);
 			return;
@@ -69,14 +69,14 @@ tileset.prototype = {
 		});
 	},
 	load:function(connection, id, callback) {
-	console.log('model load');
+	var tileset = this;
 		connection.query("SELECT * FROM tileset WHERE id = ?",[id], function(err, rows){
-			//if(err != null || rows == undefined || rows.length != 1) {
-			//	callback(false);
-			//	return false;
-			//}
+			if(err != null || rows == undefined || rows.length != 1) {
+				callback(false);
+				return false;
+			}
 			
-			this.loadData(rows[0]);
+			tileset.loadData(rows[0]);
 			callback(true);
 		});
 	},
@@ -86,7 +86,7 @@ tileset.prototype = {
 		this.tileSize = data.tileSize;
 	},
 	json:function() {
-		return { 'id': this.id, 'name': this.name, 'path': this.getPath(), 'tileSet': this.tileSet};
+		return { 'id': this.id, 'name': this.name, 'path': this.getPath(), 'tileSize': this.tileSize};
 	}
 	
 };
