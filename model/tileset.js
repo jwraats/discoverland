@@ -9,9 +9,6 @@ tileset.prototype = {
 	getId : function() {
 		return this.id;
 	},
-	setId : function(id) {
-		this.id = id;
-	},
 	getName : function() {
 		return this.name;
 	},
@@ -38,8 +35,10 @@ tileset.prototype = {
 		});
 	},
 	save : function(connection, callback) {
-		if(this.id == 0) {
+		var tileset = this;
+		if(this.id == 0 || this.id == undefined) {
 			connection.query("INSERT INTO tileset(name,tileSize) VALUE(?,?)",[this.name, this.tileSize], function(err, res){
+				tileset.id = res.insertId;
 				callback(err == null);
 			});
 		}
@@ -87,6 +86,11 @@ tileset.prototype = {
 	},
 	json:function() {
 		return { 'id': this.id, 'name': this.name, 'path': this.getPath(), 'tileSize': this.tileSize};
+	},
+	clear:function() {
+		this.id = undefined;
+		this.name = undefined;
+		this.tileSize = undefined;
 	}
 	
 };

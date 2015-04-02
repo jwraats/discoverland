@@ -9,9 +9,6 @@ map.prototype = {
 	getId : function() {
 		return this.id;
 	},
-	setId : function(id) {
-		this.id = id;
-	},
 	getName : function() {
 		return this.name;
 	},
@@ -29,8 +26,10 @@ map.prototype = {
 		});
 	},
 	save : function(connection, callback) {
-		if(this.id == 0) {
-			connection.query("INSERT INTO map(name) VALUE(?,?)",[this.name], function(err, res){
+		var map = this;
+		if(this.id == 0 || this.id == undefined) {
+			connection.query("INSERT INTO map(name) VALUE(?)",[this.name], function(err, res){
+				map.id = res.insertId;
 				callback(err == null);
 			});
 		}
@@ -77,8 +76,8 @@ map.prototype = {
 	},
 	json:function() {
 		return { 'id': this.id, 'name': this.name };
-	}
-	jsonWithTileset:function(connecion, callback) {
+	},
+	jsonWithTileset:function(connection, callback) {
 		var map = this;
 		connection.query("SELECT * FROM mapTiles WHERE map_id = ?",[map.id], function(err, rows){
 			if(err != null || rows == undefined) {
@@ -86,16 +85,21 @@ map.prototype = {
 				return false;
 			}
 			
-			var returnData = {};
+			var tileData = {};
 			
 			for(i = 0; i < rows.length; i++) {
 			
-				results[i] = { 'x': rows[i].x, 'y': rows[i].y, 'layer': rows[i].layer, 'tileset': rows[i].tileset_id }; 
+				tileData[i] = { 'x': rows[i].x, 'y': rows[i].y, 'layer': rows[i].layer, 'tileset': rows[i].tileset_id }; 
 			}
 			
-			callback(true, { 'id': this.id, 'name': this.name, 'tiles': returnData });
+			callback(true, { 'id': map.id, 'name': map.name, 'tiles': tileData });
 		});
+	},
+	clear:function() {
+		this.id = undefined;
+		this.name = undefined;
 	}
+	
 	
 };
 
