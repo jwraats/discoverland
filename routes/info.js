@@ -1,3 +1,5 @@
+var fs = require('fs');
+
 var info = {
 	tileset:  function(req, res) {
 		var model = require('../model/tileset.js');
@@ -51,7 +53,7 @@ var info = {
 		var model = require('../model/tileset.js');
 		model.clear();
 		
-		if(req.body.name == undefined || req.body.tileSize == undefined || parseInt(req.body.tileSize) == NaN) {
+		if(req.body.name == undefined || req.body.tileSize == undefined || parseInt(req.body.tileSize) == NaN  || req.files == undefined || req.files.tileset == undefined || req.files.tileset.extension.toLowerCase() != 'png') {
 			res.status(422);
 			res.json({ error: { code: 1, message: "Missing fields" }});
 			return;
@@ -59,12 +61,20 @@ var info = {
 		
 		model.setName(req.body.name);
 		model.setTileSize(parseInt(req.body.tileSize));
-		model.save(connection, function(success) {
+		model.save(connection, function(success) {		
 			if(success) {
-				res.json( { 'success': true, 'single': true, 'data': model.json() });
+				var rootDir = req.app.get('rootDir');
+				fs.rename(rootDir + '/' + req.files.tileset.path, rootDir + '/www/tilesetImg/' + model.getId() + '.png', function(err) {
+					if(!err) {
+						res.json( { 'success': true, 'single': true, 'data': model.json() });
+					}
+					else {
+						res.json({'success':  false, 'err': err });
+					}
+				});
 			}
 			else {
-				res.json({'success':  false });
+				res.json({'success':  false, 'err': 'unkown' });
 			}
 		});
 	},
@@ -75,7 +85,7 @@ var info = {
 		var connection = req.app.get('dbConnection');
 		model.load(connection, id, function(success) {
 			if(success) {
-				if(req.body.name == undefined || req.body.tileSize == undefined || parseInt(req.body.tileSize) == NaN) {
+				if(req.body.name == undefined || req.body.tileSize == undefined || parseInt(req.body.tileSize) == NaN  || (req.files != undefined && req.files.tileset != undefined && req.files.tileset.extension.toLowerCase() != 'png')) {
 					res.status(422);
 					res.json({ error: { code: 1, message: "Missing fields" }});
 					return;
@@ -84,10 +94,18 @@ var info = {
 				model.setTileSize(parseInt(req.body.tileSize));
 				model.save(connection, function(success) {
 					if(success) {
-						res.json( { 'success': true, 'single': true, 'data': model.json() });
+						var rootDir = req.app.get('rootDir');
+						fs.rename(rootDir + '/' + req.files.tileset.path, rootDir + '/www/tilesetImg/' + model.getId() + '.png', function(err) {
+							if(!err) {
+								res.json( { 'success': true, 'single': true, 'data': model.json() });
+							}
+							else {
+								res.json({'success':  false, 'err': err });
+							}
+						});
 					}
 					else {
-						res.json({'success':  false });
+						res.json({'success':  false, 'err': 'unkown' });
 					}
 				});
 			}

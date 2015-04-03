@@ -16,7 +16,7 @@ tileset.prototype = {
 		this.name = name;
 	},
 	getPath : function() {
-		return '';
+		return '/tilesetImg/' + this.id + '.png';
 	},
 	getTileSize : function() {
 		return this.tileSize;

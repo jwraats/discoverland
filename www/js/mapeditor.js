@@ -6,13 +6,37 @@ Mapeditor.mouse = {};
 Mapeditor.mouse.down = {};
 Mapeditor.mouse.up = {};
 
+//Object storage
+Mapeditor.maps = [];
+
 //Toolbar
 Mapeditor.tools = {};
 Mapeditor.tools.activeLayer = 2;
 Mapeditor.tools.activeTile = 79;
 
+Mapeditor.getTilesAndMaps = function(){
+	///api/map
+	$.ajax({
+		url: "/api/map",
+		success: function(maps){
+			Mapeditor.maps = maps.data;
+			$("#maps").html('<option>Selecteer een map... of maak een nieuwe</option>');
+			$.each(Mapeditor.maps, function( i, item ){
+				$("#maps").append('<option value="'+item.id+'">'+item.name+'</option>');
+				console.log(item);
+			});
+		}
+	});
+	
+};
 
 Mapeditor.init = function(){
+	Mapeditor.getTilesAndMaps();
+	var $footer = $('footer.footer');
+	var $canvas = $('#main');
+	$canvas.attr('height', $footer.height());
+	$canvas.attr('width', $('#map section').width());
+
 	var canvas = document.getElementById('main');
 	Mapeditor.canvas = canvas.getContext('2d');
 	Mapeditor.activeTileset = new Tileset(1, 'World', './img/tileset.png', 32);
@@ -107,6 +131,7 @@ Mapeditor.bindClick = function(){
 	});
 
 	$canvas.on('mousedown', function(event){
+		var bcr = $canvas[0].getBoundingClientRect();
 		Mapeditor.mouse.down = {
 			'x': Math.floor((event.clientX - bcr.left) / Mapeditor.activeTileset.tileSize),
 			'y': Math.floor((event.clientY - bcr.top) / Mapeditor.activeTileset.tileSize)
@@ -114,13 +139,25 @@ Mapeditor.bindClick = function(){
 	});
 
 	$canvas.on('mouseup', function(event){
+		var bcr = $canvas[0].getBoundingClientRect();
 		Mapeditor.mouse.up = {
 			'x': Math.floor((event.clientX - bcr.left) / Mapeditor.activeTileset.tileSize),
 			'y': Math.floor((event.clientY - bcr.top) / Mapeditor.activeTileset.tileSize)
 		};
-		if(Mapeditor.mouse.up !== Mapeditor.mouse.down){
+		if(Mapeditor.mouse.up.x !== Mapeditor.mouse.down.x &&
+		Mapeditor.mouse.up.y !== Mapeditor.mouse.down.y){
 			//FOR LOOP INBETWEEN
-			Mapeditor.mapSetup.layers.push(addLayer = new Layer(x, y, Mapeditor.tools.activeLayer, Mapeditor.tools.activeTile));
+			if(Mapeditor.mouse.up.x > Mapeditor.mouse.down.x &&
+			Mapeditor.mouse.up.y > Mapeditor.mouse.down.y){
+				for(var x = Mapeditor.mouse.down.x; x < Mapeditor.mouse.up.x; x++){
+					for(var y = Mapeditor.mouse.down.y; y < Mapeditor.mouse.up.y; y++){
+						Mapeditor.mapSetup.layers.push(addLayer = new Layer(x, y, Mapeditor.tools.activeLayer, Mapeditor.tools.activeTile));
+					}
+				}
+			}
+			console.log('UP: '+Mapeditor.mouse.up.x+','+Mapeditor.mouse.up.y+' DOWN: '+Mapeditor.mouse.down.x+','+Mapeditor.mouse.down.y);
+			Mapeditor.mouse.up = [];
+			Mapeditor.mouse.down = [];
 		}
 
 	});
@@ -159,7 +196,3 @@ Mapeditor.drawImage = function(value, x, y, canvas, tileset){
 		tileset.tileSize
 	);
 };
-
-$(function() {
-	Mapeditor.init();
-});

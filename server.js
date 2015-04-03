@@ -9,7 +9,7 @@ var app        	= express();                 // define our app using express
 var bodyParser 	= require('body-parser');
 var mysql		= require('mysql');
 var path		= require('path');
-
+var multer 		= require('multer');
 
 var connection = mysql.createConnection(
 {
@@ -19,6 +19,20 @@ var connection = mysql.createConnection(
 	database : 'discoverland'
 });
 app.set('dbConnection', connection);
+app.set('rootDir', __dirname);
+
+
+app.use(multer({ dest: './uploads/',
+ rename: function (fieldname, filename) {
+    return filename+Date.now();
+  },
+onFileUploadStart: function (file) {
+  console.log(file.originalname + ' is starting ...')
+},
+onFileUploadComplete: function (file) {
+  console.log(file.fieldname + ' uploaded to  ' + file.path)
+}
+}));
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
