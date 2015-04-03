@@ -23,6 +23,7 @@ var info = {
 				}
 			}
 			
+			res.clearTmp();
 			res.json(data);
 		});		
 	},
@@ -44,6 +45,7 @@ var info = {
 				}
 			}
 			
+			res.clearTmp();
 			res.json(data);
 		});
 	},
@@ -55,6 +57,7 @@ var info = {
 		
 		if(req.body.name == undefined || req.body.tileSize == undefined || parseInt(req.body.tileSize) == NaN  || req.files == undefined || req.files.tileset == undefined || req.files.tileset.extension.toLowerCase() != 'png') {
 			res.status(422);
+			res.clearTmp();
 			res.json({ error: { code: 1, message: "Missing fields" }});
 			return;
 		}
@@ -66,14 +69,17 @@ var info = {
 				var rootDir = req.app.get('rootDir');
 				fs.rename(rootDir + '/' + req.files.tileset.path, rootDir + '/www/tilesetImg/' + model.getId() + '.png', function(err) {
 					if(!err) {
+						res.clearTmp();
 						res.json( { 'success': true, 'single': true, 'data': model.json() });
 					}
 					else {
+						res.clearTmp();
 						res.json({'success':  false, 'err': err });
 					}
 				});
 			}
 			else {
+				res.clearTmp();
 				res.json({'success':  false, 'err': 'unkown' });
 			}
 		});
@@ -87,6 +93,7 @@ var info = {
 			if(success) {
 				if(req.body.name == undefined || req.body.tileSize == undefined || parseInt(req.body.tileSize) == NaN  || (req.files != undefined && req.files.tileset != undefined && req.files.tileset.extension.toLowerCase() != 'png')) {
 					res.status(422);
+					res.clearTmp();
 					res.json({ error: { code: 1, message: "Missing fields" }});
 					return;
 				}
@@ -97,14 +104,17 @@ var info = {
 						var rootDir = req.app.get('rootDir');
 						fs.rename(rootDir + '/' + req.files.tileset.path, rootDir + '/www/tilesetImg/' + model.getId() + '.png', function(err) {
 							if(!err) {
+								res.clearTmp();
 								res.json( { 'success': true, 'single': true, 'data': model.json() });
 							}
 							else {
+								res.clearTmp();
 								res.json({'success':  false, 'err': err });
 							}
 						});
 					}
 					else {
+						res.clearTmp();
 						res.json({'success':  false, 'err': 'unkown' });
 					}
 				});
@@ -160,6 +170,7 @@ var info = {
 				}
 			}
 			
+			res.clearTmp();
 			res.json(data);
 		});		
 	},
@@ -181,14 +192,17 @@ var info = {
 							'single':true,
 							'data': result,
 						}
+						res.clearTmp();
 						res.json(data);
 					}
 					else {
+						res.clearTmp();
 						res.json(data);
 					}
 				});
 			}
 			else {
+				res.clearTmp();
 				res.json(data);
 			}
 		});
@@ -201,6 +215,7 @@ var info = {
 		
 		if(req.body.name == undefined) {
 			res.status(422);
+			res.clearTmp();
 			res.json({ error: { code: 1, message: "Missing fields" }});
 			return;
 		}
@@ -208,9 +223,11 @@ var info = {
 		model.setName(req.body.name);
 		model.save(connection, function(success) {
 			if(success) {
+				res.clearTmp();
 				res.json( { 'success': true, 'single': true, 'data': model.json() });
 			}
 			else {
+				res.clearTmp();
 				res.json({'success':  false });
 			}
 		});
@@ -224,15 +241,18 @@ var info = {
 			if(success) {
 				if(req.body.name == undefined) {
 					res.status(422);
+					res.clearTmp();
 					res.json({ error: { code: 1, message: "Missing fields" }});
 					return;
 				}
 				model.setName(req.body.name);
 				model.save(connection, function(success) {
 					if(success) {
+						res.clearTmp();
 						res.json( { 'success': true, 'single': true, 'data': model.json() });
 					}
 					else {
+						res.clearTmp();
 						res.json({'success':  false });
 					}
 				});

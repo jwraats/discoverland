@@ -10,6 +10,7 @@ var bodyParser 	= require('body-parser');
 var mysql		= require('mysql');
 var path		= require('path');
 var multer 		= require('multer');
+var fs 			= require('fs');
 
 var connection = mysql.createConnection(
 {
@@ -41,6 +42,16 @@ app.use(bodyParser.json());
 
 
 var port = process.env.PORT || 8088;        // set our port
+
+//Create endware
+express.response.clearTmp = function() {
+	if(this.req.files != undefined) {
+		var req = this.req;
+		Object.keys(this.req.files).forEach(function(element, key, _array) {
+			fs.unlink(req.files[element].path);		
+		});
+	}
+};
 
 // ROUTES FOR OUR API
 // =============================================================================
