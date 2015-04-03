@@ -32,4 +32,8 @@ function load(url) {
 		tilesetManager.init();
 		tilesetManager.loadAll();
 	}
+	else if(url == 'map.html') {
+		mapManager.init();
+		mapManager.loadAll();
+	}
 }

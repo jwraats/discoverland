@@ -40,7 +40,6 @@ map.prototype = {
 		}
 	},
 	loadAll : function(connection, callback) {
-		console.log('Load all');
 		connection.query("SELECT * FROM map",[], function(err, rows){
 			if(err != null || rows == undefined) {
 				callback(false, null);

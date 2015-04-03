@@ -49,7 +49,6 @@ tileset.prototype = {
 		}
 	},
 	loadAll : function(connection, callback) {
-		console.log('Load all');
 		connection.query("SELECT * FROM tileset",[], function(err, rows){
 			if(err != null || rows == undefined) {
 				callback(false, null);
