@@ -102,16 +102,22 @@ var info = {
 				model.save(connection, function(success) {
 					if(success) {
 						var rootDir = req.app.get('rootDir');
-						fs.rename(rootDir + '/' + req.files.tileset.path, rootDir + '/www/tilesetImg/' + model.getId() + '.png', function(err) {
-							if(!err) {
-								res.clearTmp();
-								res.json( { 'success': true, 'single': true, 'data': model.json() });
-							}
-							else {
-								res.clearTmp();
-								res.json({'success':  false, 'err': err });
-							}
-						});
+						if(req.files != undefined && req.files.tileset != undefined) {
+							fs.rename(rootDir + '/' + req.files.tileset.path, rootDir + '/www/tilesetImg/' + model.getId() + '.png', function(err) {
+								if(!err) {
+									res.clearTmp();
+									res.json( { 'success': true, 'single': true, 'data': model.json() });
+								}
+								else {
+									res.clearTmp();
+									res.json({'success':  false, 'err': err });
+								}
+							});
+						}
+						else {
+							res.clearTmp();
+							res.json( { 'success': true, 'single': true, 'data': model.json() });
+						}
 					}
 					else {
 						res.clearTmp();

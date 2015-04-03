@@ -13,29 +13,38 @@ TilesetManager.prototype = {
 		oSettings = table.fnSettings();
 		table.fnClearTable(this);
 		
-		
-		$.get('/api/tileset', function(data) {
-			if(data.success) {
-				$.each(data.data, function(index, row) {
-					table.oApi._fnAddData(oSettings, [row.id, row.name, row.tileSize, '<button class="btn btn-default" id="new" type="submit" onclick="tilesetManager.load(' + row.id + ');">Aanpassen</button>', '<button class="btn btn-default" id="new" type="submit" onclick="tilesetManager.remove(' + row.id + ');">Verwijderen</button>']);
-				});
-				
-				oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
-				table.fnDraw();
+		$.ajax({
+			url: '/api/tileset',
+			type: 'GET',
+			beforeSend: function(request){request.setRequestHeader("X-Access-Token", token);},
+			success: function(data) {
+				if(data.success) {
+					$.each(data.data, function(index, row) {
+						table.oApi._fnAddData(oSettings, [row.id, row.name, row.tileSize, '<button class="btn btn-default" id="new" type="submit" onclick="tilesetManager.load(' + row.id + ');">Aanpassen</button>', '<button class="btn btn-default" id="new" type="submit" onclick="tilesetManager.remove(' + row.id + ');">Verwijderen</button>']);
+					});
+					
+					oSettings.aiDisplay = oSettings.aiDisplayMaster.slice();
+					table.fnDraw();
+				}
 			}
 		});
 	},
 	load:function(id) {
 		this.id = id;
 		if(id != 0) {
-			$.get('/api/tileset/' + id, function(data) {
-				if(data.success) {				
-					loadPage('tilesetEdit.html', function() {
-						$('#tilesetName').val(data.data.name);
-						$('#tilesetSize').val(data.data.tileSize);
-						$('#tilesetImg').attr("src",data.data.path + '?' + new Date().getTime());
-						tilesetManager.loadForm();
-					});
+			$.ajax({
+				url: '/api/tileset/' + id,
+				type: 'GET',
+				beforeSend: function(request){request.setRequestHeader("X-Access-Token", token);},
+				success: function(data) {
+					if(data.success) {				
+						loadPage('tilesetEdit.html', function() {
+							$('#tilesetName').val(data.data.name);
+							$('#tilesetSize').val(data.data.tileSize);
+							$('#tilesetImg').attr("src",data.data.path + '?' + new Date().getTime());
+							tilesetManager.loadForm();
+						});
+					}
 				}
 			});
 		}
@@ -64,24 +73,28 @@ TilesetManager.prototype = {
 			$.ajax({
 				url: url,
 				type: type,
+				beforeSend: function (request){request.setRequestHeader("X-Access-Token", token);},
 				data: new FormData( this ),
 				processData: false,
-				contentType: false
-			}).done(function( data ) {
-				loadPage('tileset.html', function() {
-					load('tileset.html');
-				});
+				contentType: false,
+				success: function( data ) {
+					loadPage('tileset.html', function() {
+						load('tileset.html');
+					});
+				}
 			});
 			e.preventDefault();
 		});
 	},
 	remove:function(id) {
 		$.ajax({
-				url: '/api/tileset/' + id,
-				type: 'DELETE',
-			}).done(function( data ) {
+			url: '/api/tileset/' + id,
+			type: 'DELETE',
+			beforeSend: function(request){request.setRequestHeader("X-Access-Token", token);},
+			success: function(data) {
 				tilesetManager.loadAll();
-			});
+			}
+		});
 	}
 };
 

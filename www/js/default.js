@@ -1,6 +1,13 @@
+var token = '';
+
 $(document).ready(function() {
 	$('nav ul li a').click(function(e) {
 		e.preventDefault();
+		
+		if(token == '') {
+			gotoLogin();
+			return;
+		}
 		
 		var url = $(this).attr('href');
 		
@@ -9,8 +16,26 @@ $(document).ready(function() {
 		});
 			
 	});
-	$('nav ul li a:first').trigger('click');
+	gotoLogin();
 });
+
+function gotoLogin() {
+	loadPage('login.html', function() {
+		$('#loginForm').submit(function(e){
+			$.ajax({
+				url: '/api/login',
+				type: 'POST',
+				data: new FormData( this ),
+				processData: false,
+				contentType: false
+			}).done(function( data ) {
+				token = data.token;
+				$('nav ul li:first a').trigger('click');
+			});
+			e.preventDefault();
+		});
+	});
+}
 
 function loadPage(url, callback) {
 	$.get('/pages/' + url, function( data ) {

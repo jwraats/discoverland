@@ -4,6 +4,7 @@
 // =============================================================================
 
 // call the packages we need
+var tokenValidator = require("./controller/tokenValidator.js");
 var express    	= require('express');        // call express
 var app        	= express();                 // define our app using express
 var bodyParser 	= require('body-parser');
@@ -21,6 +22,9 @@ var connection = mysql.createConnection(
 });
 app.set('dbConnection', connection);
 app.set('rootDir', __dirname);
+app.set('username', 'discOv3rlAnd');
+app.set('password', 'g3h3im');
+app.set('secretkey', 'fd2D2EoFdoc$$4d8J@dT8Vc');
 
 
 app.use(multer({ dest: './uploads/',
@@ -53,11 +57,15 @@ express.response.clearTmp = function() {
 	}
 };
 
-// ROUTES FOR OUR API
-// =============================================================================
-//var router = express.Router();              // get an instance of the express Router
 
-// REGISTER OUR ROUTES -------------------------------
+/*
+ * /api/login is the only route without auth, /api/login generates API key
+ */
+app.post('/api/login', require('./routes/auth.js').login);
+
+// All other /api/* API request routing via JWT validation
+app.all('/api/*', tokenValidator);
+
 // all of our routes will be prefixed with /api
 app.use('/api', require('./routes/index.js'));
 
