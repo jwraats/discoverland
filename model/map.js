@@ -21,7 +21,7 @@ map.prototype = {
 			return;
 		}
 			
-		connection.query("DELETE FROM map WHERE id = ?",[this.id], function(err, res){
+		connection.query("DELETE map, mapTiles FROM map INNER JOIN mapTiles ON (map.id = mapTiles.map_id) WHERE map.id = ?",[this.id], function(err, res){
 			callback(err == null);
 		});
 	},

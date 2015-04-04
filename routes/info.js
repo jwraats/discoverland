@@ -28,11 +28,7 @@ var info = {
 		});		
 	},
 	tilesetId:  function(req, res) {
-		var model = require('../model/tileset.js');
-		var data = {
-			'success': false
-		};
-		
+		var model = require('../model/tileset.js');		
 		var id = parseInt(req.params.id);
 		
 		var connection = req.app.get('dbConnection');
@@ -43,10 +39,14 @@ var info = {
 					'single':true,
 					'data': model.json(),
 				}
+				res.clearTmp();
+				res.json(data);
 			}
-			
-			res.clearTmp();
-			res.json(data);
+			else {
+				res.status(404);
+				res.clearTmp();
+				res.type('txt').send('');
+			}
 		});
 	},
 	insertTileset: function(req, res) {
@@ -80,7 +80,7 @@ var info = {
 			}
 			else {
 				res.clearTmp();
-				res.json({'success':  false, 'err': 'unkown' });
+				res.json({'success':  false, 'err': 'unknown' });
 			}
 		});
 	},
@@ -121,12 +121,13 @@ var info = {
 					}
 					else {
 						res.clearTmp();
-						res.json({'success':  false, 'err': 'unkown' });
+						res.json({'success':  false, 'err': 'unknown' });
 					}
 				});
 			}
 			else {
 				res.status(404);
+				res.clearTmp();
 				res.type('txt').send('');
 			}
 		});
@@ -209,7 +210,8 @@ var info = {
 			}
 			else {
 				res.clearTmp();
-				res.json(data);
+				res.status(404);
+				res.type('txt').send('');
 			}
 		});
 	},

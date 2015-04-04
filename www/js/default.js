@@ -30,7 +30,13 @@ function gotoLogin() {
 				contentType: false
 			}).done(function( data ) {
 				token = data.token;
+				success('Successvol ingelogd');
 				$('nav ul li:first a').trigger('click');
+			}).fail(function(e) {
+				if(e.status == 401)
+					error('Gebruikersnaam/wachtwoord ongeldig!');
+				else
+					error('Onbekende fout!');
 			});
 			e.preventDefault();
 		});
@@ -38,7 +44,10 @@ function gotoLogin() {
 }
 
 function loadPage(url, callback) {
-	$.get('/pages/' + url, function( data ) {
+	$.ajax({
+		url: '/pages/' + url,
+		type: 'GET',
+	}).done(function(data) {
 		var container = $( "#container" );
 		container.fadeOut('fast', function() {
 			container.html( data );
@@ -46,6 +55,8 @@ function loadPage(url, callback) {
 			container.fadeIn('fast', function(){
 			});
 		});
+	}).fail(function(e) {
+		error('Onbekende fout!');
 	});
 }
 
@@ -61,4 +72,20 @@ function load(url) {
 		mapManager.init();
 		mapManager.loadAll();
 	}
+}
+
+function success(message) {
+	var content = '<div class="alert alert-success alert-dismissible" role="alert">' +
+	'	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+	'	<strong>Gelukt!</strong> ' + message +
+	'</div>';
+	$('#messages').append(content);
+}
+
+function error(message) {
+	var content = '<div class="alert alert-danger alert-dismissible" role="alert">' +
+	'	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+	'	<strong>Fout!</strong> ' + message +
+	'</div>';
+	$('#messages').append(content);
 }

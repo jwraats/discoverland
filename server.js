@@ -52,7 +52,8 @@ express.response.clearTmp = function() {
 	if(this.req.files != undefined) {
 		var req = this.req;
 		Object.keys(this.req.files).forEach(function(element, key, _array) {
-			fs.unlink(req.files[element].path);		
+			var path = req.files[element].path;
+			fs.unlink(path, function(e) {});		
 		});
 	}
 };
