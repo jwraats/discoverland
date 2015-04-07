@@ -30,7 +30,7 @@ tileset.prototype = {
 			return;
 		}
 			
-		connection.query("DELETE tileset, mapTiles FROM tileset INNER JOIN mapTiles ON (tileset.id = mapTiles.tileset_id) WHERE tileset.id = ?",[this.id], function(err, res){
+		connection.query("DELETE tileset, mapTiles FROM tileset LEFT JOIN mapTiles ON (tileset.id = mapTiles.tileset_id) WHERE tileset.id = ?",[this.id], function(err, res){
 			callback(err == null);
 		});
 	},

@@ -221,7 +221,7 @@ var info = {
 		var model = require('../model/map.js');
 		model.clear();
 		
-		if(req.body.name == undefined) {
+		if(req.body.name == undefined || req.body.tiles == undefined) {
 			res.status(422);
 			res.clearTmp();
 			res.json({ error: { code: 1, message: "Missing fields" }});
@@ -229,6 +229,7 @@ var info = {
 		}
 		
 		model.setName(req.body.name);
+		model.setTiles(req.body.tiles);
 		model.save(connection, function(success) {
 			if(success) {
 				res.clearTmp();
@@ -247,13 +248,14 @@ var info = {
 		var connection = req.app.get('dbConnection');
 		model.load(connection, id, function(success) {			
 			if(success) {
-				if(req.body.name == undefined) {
+				if(req.body.name == undefined || req.body.tiles == undefined) {
 					res.status(422);
 					res.clearTmp();
 					res.json({ error: { code: 1, message: "Missing fields" }});
 					return;
 				}
 				model.setName(req.body.name);
+				model.setTiles(req.body.tiles);
 				model.save(connection, function(success) {
 					if(success) {
 						res.clearTmp();

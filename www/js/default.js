@@ -75,17 +75,21 @@ function load(url) {
 }
 
 function success(message) {
-	var content = '<div class="alert alert-success alert-dismissible" role="alert">' +
+	var content = $('<div class="alert alert-success alert-dismissible" role="alert">' +
 	'	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
 	'	<strong>Gelukt!</strong> ' + message +
-	'</div>';
+	'</div>');
 	$('#messages').append(content);
+	
+	setTimeout((function(){ content.fadeOut('slow') }), 2000);
 }
 
 function error(message) {
-	var content = '<div class="alert alert-danger alert-dismissible" role="alert">' +
+	var content = $('<div class="alert alert-danger alert-dismissible" role="alert">' +
 	'	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
 	'	<strong>Fout!</strong> ' + message +
-	'</div>';
+	'</div>');
 	$('#messages').append(content);
+	
+	setTimeout((function(){ content.fadeOut('slow') }), 2000);
 }
