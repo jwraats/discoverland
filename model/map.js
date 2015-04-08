@@ -40,18 +40,18 @@ map.prototype = {
 				map.id = res.insertId;
 				
 				if(Array.isArray(map.tiles)) {
-					for(int i = 0; i < map.tiles.length; i++) {
+					for(i = 0; i < map.tiles.length; i++) {
 						if(map.tiles[i].x == undefined ||
-							map.tiles[i].y == undefined
-							map.tiles[i].layer == undefined
-							map.tiles[i].tileset_id == undefined
+							map.tiles[i].y == undefined ||
+							map.tiles[i].layer == undefined ||
+							map.tiles[i].tileset_id == undefined ||
 							map.tiles[i].tileset_nr == undefined) {
 							continue;
 						}
 						
 						connection.query("INSERT INTO mapTiles(map_id, x, y, layer, tileset_id, tileset_nr) VALUE(?,?,?,?,(SELECT id FROM tileset WHERE id = ?),?)",[map.id, map.tiles[i].x, map.tiles[i].y, map.tiles[i].layer, map.tiles[i].tileset_id, tileset_nr], function(err, res){
 							//If query fail ignore it.
-						}
+						});
 					}
 				}
 				callback(true);
@@ -72,17 +72,17 @@ map.prototype = {
 					}
 					
 					if(Array.isArray(map.tiles)) {
-						for(int i = 0; i < map.tiles.length; i++) {
+						for(i = 0; i < map.tiles.length; i++) {
 							if(map.tiles[i].x == undefined ||
-								map.tiles[i].y == undefined
-								map.tiles[i].layer == undefined
-								map.tiles[i].tileset_id == undefined
+								map.tiles[i].y == undefined ||
+								map.tiles[i].layer == undefined ||
+								map.tiles[i].tileset_id == undefined ||
 								map.tiles[i].tileset_nr == undefined) {
 								continue;
 							}
 							connection.query("INSERT INTO mapTiles(map_id, x, y, layer, tileset_id, tileset_nr) VALUE(?,?,?,?,(SELECT id FROM tileset WHERE id = ?),?)",[map.id, map.tiles[i].x, map.tiles[i].y, map.tiles[i].layer, map.tiles[i].tileset_id, tileset_nr], function(err, res){
 								//If query fail ignore it.
-							}
+							});
 						}
 					}
 					callback(true);
