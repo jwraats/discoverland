@@ -1,2 +1,24 @@
+# Installeren
+Wat heb je nodig? 
+  - nodejs (https://nodejs.org/download/)
+  - npm (https://www.npmjs.com/package/npm)
+  
+# Package npm
+    - fs
+    - express-handlebars
+    - cookie-parser
+    - serve-favicon
+    - mysql
+    - multer
+    - morgan
+    - moment
+    - jwt-simple
+    - express
+    - debug
+    - body-parser
+  - mysql-server
+    importeren van de SQL-file
+  - Instellen van config.js
+  
 # discoverland
-A small HTML, CSS, Javascript and node.js project with Joost and Jan Willem Raats.
+http://localhost:9000
