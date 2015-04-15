@@ -1,0 +1,24 @@
+<section>
+	<h1>Tileset aanpassen</h1>
+	<form id="tilesetForm" method="post" enctype="multipart/form-data">
+		<table>
+			<tr>
+				<th>Naam:</th>
+				<td><input type="text" id="tilesetName" name="name" /></td>
+			</tr>
+			<tr>
+				<th>Tileset:</th>
+				<td><input type="file" id="tilesetTileset" name="tileset" /></td>
+			</tr>
+			<tr id="tilesetImgPlaceholder">
+				<th>Huidige tileset</th>
+				<td><img id="tilesetImg" /></td>
+			</tr>
+			<tr>
+				<th>Tileset grootte:</th>
+				<td><input type="text" id="tilesetSize" name="tileSize" /></td>
+			</tr>
+		</table>
+		<button class="btn btn-default" type="submit">Opslaan</button>
+	</form>
+</section>
