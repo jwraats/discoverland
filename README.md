@@ -1,8 +1,9 @@
 # Installeren
 Wat heb je nodig? 
-  - nodejs (
+  - nodejs (https://nodejs.org/download/)
   - npm (https://www.npmjs.com/package/npm)
-  # Package npm
+  
+# Package npm
     - fs
     - express-handlebars
     - cookie-parser
